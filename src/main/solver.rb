@@ -86,7 +86,7 @@ class Solver
 
     def find_cross_street_cell_position(answer_field, cross_street_cell)
         answer_field.cells.select(&:empty?).each do |cell|
-            if cell.neighbors.all?(&:may_be_passable?)
+            if cell.neighbors.size == 4 && cell.neighbors.all?(&:may_be_passable?)
                 return [cell.row, cell.column]
             end
         end
