@@ -100,6 +100,10 @@ class Runner
         send(method_name, context)
     end
 
+    def move_from_null(context)
+        raise CarCrushed
+    end
+
     def move_from_empty(context)
         raise CarCrushed
     end
