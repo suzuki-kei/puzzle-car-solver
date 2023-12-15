@@ -54,6 +54,10 @@ module Cell
                 passable
             end
 
+            def may_be_passable?
+                empty? || passable?
+            end
+
             def cross_street?
                 street? && two_ways.size == 2
             end

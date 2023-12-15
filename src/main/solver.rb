@@ -85,8 +85,8 @@ class Solver
     end
 
     def find_cross_street_cell_position(answer_field, cross_street_cell)
-        answer_field.cells.each do |cell|
-            if cell.neighbors.all?(&method(:empty_or_passable_cell?))
+        answer_field.cells.select(&:empty?).each do |cell|
+            if cell.neighbors.all?(&:may_be_passable?)
                 return [cell.row, cell.column]
             end
         end
@@ -158,20 +158,16 @@ class Solver
     def neighbor_is_empty_or_passable?(answer_field, row, column, direction)
         case direction
             when :top
-                empty_or_passable_cell?(answer_field[row - 1][column])
+                answer_field[row - 1][column].may_be_passable?
             when :bottom
-                empty_or_passable_cell?(answer_field[row + 1][column])
+                answer_field[row + 1][column].may_be_passable?
             when :left
-                empty_or_passable_cell?(answer_field[row][column - 1])
+                answer_field[row][column - 1].may_be_passable?
             when :right
-                empty_or_passable_cell?(answer_field[row][column + 1])
+                answer_field[row][column + 1].may_be_passable?
             else
                 raise 'BUG'
         end
-    end
-
-    def empty_or_passable_cell?(cell)
-        cell.empty? || cell.passable?
     end
 
 end
