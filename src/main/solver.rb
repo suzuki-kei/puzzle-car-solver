@@ -130,13 +130,9 @@ class Solver
             case count
                 when 1
                     placeable_tunnel_cell?(answer_field, row, column, cell)
-                when 2
-                    placeable_street_cell?(answer_field, row, column, cell)
-                when 3
+                when 2, 3, 4
                     placeable_tunnel_cell?(answer_field, row, column, cell) ||
                         placeable_street_cell?(answer_field, row, column, cell)
-                when 4
-                    placeable_street_cell?(answer_field, row, column, cell)
                 else
                     false
             end
