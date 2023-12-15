@@ -124,7 +124,7 @@ class Solver
         # Cell::Empty の場合は通過できるか未確定なので,
         # 通過できる場合と通過できない場合の両方を考慮して判断する.
         lower = cell.neighbors.count(&:passable?)
-        upper = lower + cell.neighbors.count(&:empty?)
+        upper = cell.neighbors.count(&:may_be_passable?)
 
         (lower..upper).any? do |count|
             case count
