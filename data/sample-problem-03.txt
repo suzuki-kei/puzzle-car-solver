@@ -1,0 +1,4 @@
+street({bottom,right})       street({left,right})  street({left,bottom})
+street({top,bottom})         tree                  street({top,bottom})
+start({from=bottom,to=top})  tree                  end({from=top,to=bottom})
+

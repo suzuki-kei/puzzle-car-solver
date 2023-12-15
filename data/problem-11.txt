@@ -1,0 +1,8 @@
+tree                         stop({from=right,to=left})         street({left,right})            crossing({from=left,to=right})  street({left,top})
+end({from=right,to=left})    street({left,right},{top,bottom})  street({top,right})             street({bottom,right})          street({left,right})
+tree                         stop({from=bottom,to=top})         tree                            tree                            tree
+tree                         crossing({from=bottom,to=top})     tree                            tree                            tree
+tree                         street({left,right},{top,bottom})  tree                            tree                            tree
+start({from=left,to=right})  street({top,bottom})               street({left,bottom})           street({left,right})            street({left,right})
+tree                         street({left,top})                 crossing({from=right,to=left})  street({left,bottom})           stop({from=left,to=right})
+
