@@ -145,28 +145,13 @@ class Solver
 
     # cell が answer_field[row][column] に配置可能な Cell::Tunnel の場合に true.
     def placeable_tunnel_cell?(answer_field, row, column, cell)
-        cell.tunnel? && neighbor_is_empty_or_passable?(answer_field, row, column, cell.direction)
+        cell.tunnel? && answer_field[row][column].neighbor(cell.direction).may_be_passable?
     end
 
     # cell が answer_field[row][column] に配置可能な Cell::Street の場合に true.
     def placeable_street_cell?(answer_field, row, column, cell)
         cell.street? && cell.two_ways.flatten.all? do |direction|
-            neighbor_is_empty_or_passable?(answer_field, row, column, direction)
-        end
-    end
-
-    def neighbor_is_empty_or_passable?(answer_field, row, column, direction)
-        case direction
-            when :top
-                answer_field[row - 1][column].may_be_passable?
-            when :bottom
-                answer_field[row + 1][column].may_be_passable?
-            when :left
-                answer_field[row][column - 1].may_be_passable?
-            when :right
-                answer_field[row][column + 1].may_be_passable?
-            else
-                raise 'BUG'
+            answer_field[row][column].neighbor(direction).may_be_passable?
         end
     end
 

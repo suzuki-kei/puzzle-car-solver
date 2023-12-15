@@ -24,6 +24,21 @@ class PositionedCell
         @field, @cell, @row, @column = field, cell, row, column
     end
 
+    def neighbor(direction)
+        case direction
+            when :top
+                @field[@row - 1][@column]
+            when :bottom
+                @field[@row + 1][@column]
+            when :left
+                @field[@row][@column - 1]
+            when :right
+                @field[@row][@column + 1]
+            else
+                raise 'BUG'
+        end
+    end
+
     def neighbors
         cells = [
             @field[@row - 1][@column],
