@@ -18,7 +18,7 @@ class Field
                 cell = Cell::Null.new
             end
 
-            PositionedCell.new(cell, @row, column)
+            PositionedCell.new(@field, cell, @row, column)
         end
 
         def []=(column, cell)
@@ -100,7 +100,7 @@ class Field
     def enumerator
         Enumerator.new(row_size * column_size) do |yielder|
             Enumerator.product(0...row_size, 0...column_size).each do |row, column|
-                yielder << PositionedCell.new(@rows[row][column], row, column)
+                yielder << PositionedCell.new(self, @rows[row][column], row, column)
             end
         end
     end

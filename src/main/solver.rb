@@ -86,15 +86,8 @@ class Solver
 
     def find_cross_street_cell_position(answer_field, cross_street_cell)
         answer_field.cells.each do |cell|
-            row, column = cell.row, cell.column
-            neighbor_cells = [
-                answer_field[row - 1][column],
-                answer_field[row + 1][column],
-                answer_field[row][column - 1],
-                answer_field[row][column + 1],
-            ]
-            if neighbor_cells.all?(&method(:empty_or_passable_cell?))
-                return [row, column]
+            if cell.neighbors.all?(&method(:empty_or_passable_cell?))
+                return [cell.row, cell.column]
             end
         end
     end
@@ -128,17 +121,10 @@ class Solver
     end
 
     def can_be_placed?(answer_field, row, column, cell)
-        neighbor_cells = [
-            answer_field[row - 1][column],
-            answer_field[row + 1][column],
-            answer_field[row][column - 1],
-            answer_field[row][column + 1],
-        ]
-
         # Cell::Empty の場合は通過できるか未確定なので,
         # 通過できる場合と通過できない場合の両方を考慮して判断する.
-        lower = neighbor_cells.count(&:passable?)
-        upper = lower + neighbor_cells.count(&:empty?)
+        lower = cell.neighbors.count(&:passable?)
+        upper = lower + cell.neighbors.count(&:empty?)
 
         (lower..upper).any? do |count|
             case count

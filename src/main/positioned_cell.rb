@@ -17,11 +17,21 @@ class PositionedCell
         cell
     end
 
-    attr_reader :cell, :row, :column
+    attr_reader :field, :cell, :row, :column
 
-    def initialize(cell, row, column)
+    def initialize(field, cell, row, column)
         cell = self.class.peel_cell(cell)
-        @cell, @row, @column = cell, row, column
+        @field, @cell, @row, @column = field, cell, row, column
+    end
+
+    def neighbors
+        cells = [
+            @field[@row - 1][@column],
+            @field[@row + 1][@column],
+            @field[@row][@column - 1],
+            @field[@row][@column + 1],
+        ]
+        cells.reject(&:null?)
     end
 
     def method_missing(name, *arguments)
