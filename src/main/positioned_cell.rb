@@ -58,6 +58,16 @@ class PositionedCell
     end
 
     def ==(other)
+        equal_class?(other) && equal_all_fields?(other)
+    end
+
+    private
+
+    def equal_class?(other)
+        self.class == other.class
+    end
+
+    def equal_all_fields?(other)
         cell == other.cell && row == other.row && column == other.column
     end
 
