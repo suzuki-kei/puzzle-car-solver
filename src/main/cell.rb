@@ -54,7 +54,11 @@ module Cell
                 passable
             end
 
-            %i(empty start end street crossing stop tunnel tree waterway).each do |name|
+            def cross_street?
+                street? && two_ways.size == 2
+            end
+
+            %i(null empty start end street crossing stop tunnel tree waterway).each do |name|
                 define_method("#{name}?") do
                     name == self.name
                 end
@@ -80,6 +84,8 @@ module Cell
         end
     end
 
+    # Null はフィールド外, Empty は未確定セルを表す.
+    Null     = new_cell_class(fields=%i(),             movable=false, passable=false)
     Empty    = new_cell_class(fields=%i(),             movable=true,  passable=false)
     Start    = new_cell_class(fields=%i(from to),      movable=false, passable=true)
     End      = new_cell_class(fields=%i(from to),      movable=false, passable=true)

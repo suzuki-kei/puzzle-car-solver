@@ -26,7 +26,7 @@ class Runner
 
         def initialize(field)
             @field = field
-            @cell  = field.start_cell || Cell::Empty.new
+            @cell  = field.start_cell || Cell::Null.new
             @steps = []
         end
 

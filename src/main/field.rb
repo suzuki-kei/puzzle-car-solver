@@ -15,7 +15,7 @@ class Field
             if (0...@field.row_size).include?(@row) && (0...@field.column_size).include?(column)
                 cell = @field.rows[@row][column]
             else
-                cell = Cell::Empty.new
+                cell = Cell::Null.new
             end
 
             PositionedCell.new(cell, @row, column)

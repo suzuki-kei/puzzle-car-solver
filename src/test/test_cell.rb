@@ -4,6 +4,7 @@ require 'cell'
 class CellTestCase < Test::Unit::TestCase
 
     def test_name
+        assert_equal :null,     Cell::Null.new.name
         assert_equal :empty,    Cell::Empty.new.name
         assert_equal :start,    Cell::Start.new.name
         assert_equal :end,      Cell::End.new.name
