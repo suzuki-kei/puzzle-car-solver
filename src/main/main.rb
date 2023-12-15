@@ -3,14 +3,17 @@ require 'field'
 require 'solver'
 
 def main
-    initial_field = Field.from_file('data/problem-11.txt')
-    puts '==== initial field'
-    puts initial_field.serialize
+    file_path = 'data/problem-11.txt'
 
-    puts '==== solved field'
+    initial_field = Field.from_file(file_path)
+    puts "==== initial field (file_path=#{file_path})"
+    puts initial_field.serialize
+    puts
+
     solved_field, attempts = Solver.new.solve(initial_field)
-    puts "attempts = #{attempts}"
+    puts "==== solved field (attempts=#{attempts})"
     puts solved_field.serialize if solved_field
+    puts
 rescue Interrupt
     # Ctrl+C で終了した場合はスタックトレースを出さずに終了する.
 end
