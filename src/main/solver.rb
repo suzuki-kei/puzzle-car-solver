@@ -129,10 +129,10 @@ class Solver
         (lower..upper).any? do |count|
             case count
                 when 1
-                    placeable_tunnel_cell?(answer_field, row, column, cell)
+                    tunnel_cell_can_be_placed?(answer_field, row, column, cell)
                 when 2, 3, 4
-                    placeable_tunnel_cell?(answer_field, row, column, cell) ||
-                        placeable_street_cell?(answer_field, row, column, cell)
+                    tunnel_cell_can_be_placed?(answer_field, row, column, cell) ||
+                        street_cell_can_be_placed?(answer_field, row, column, cell)
                 else
                     false
             end
@@ -140,12 +140,12 @@ class Solver
     end
 
     # cell が answer_field[row][column] に配置可能な Cell::Tunnel の場合に true.
-    def placeable_tunnel_cell?(answer_field, row, column, cell)
+    def tunnel_cell_can_be_placed?(answer_field, row, column, cell)
         cell.tunnel? && answer_field[row][column].neighbor(cell.direction).maybe_passable?
     end
 
     # cell が answer_field[row][column] に配置可能な Cell::Street の場合に true.
-    def placeable_street_cell?(answer_field, row, column, cell)
+    def street_cell_can_be_placed?(answer_field, row, column, cell)
         cell.street? && cell.two_ways.flatten.all? do |direction|
             answer_field[row][column].neighbor(direction).maybe_passable?
         end
