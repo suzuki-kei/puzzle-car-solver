@@ -82,7 +82,7 @@ class Solver
         end
     end
 
-    def traverse(answer_field, cells, attempts=0)
+    def traverse(answer_field, cells, cache=Hash.new, attempts=0)
         if cells.empty?
             [solved?(answer_field), attempts]
         else
@@ -95,8 +95,12 @@ class Solver
 
                 if can_be_placed?(answer_field, row, column, cell)
                     answer_field[row][column] = cell
-                    remaining_cells = cells.take(i) + cells.drop(i + 1)
-                    solved, attempts = traverse(answer_field, remaining_cells, attempts)
+                    serialized_field = answer_field.serialize
+                    if (solved = cache[serialized_field]).nil?
+                        remaining_cells = cells.take(i) + cells.drop(i + 1)
+                        solved, attempts = traverse(answer_field, remaining_cells, cache, attempts)
+                        cache[serialized_field] = solved
+                    end
 
                     if solved
                         return [solved, attempts]
