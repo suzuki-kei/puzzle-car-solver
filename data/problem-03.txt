@@ -1,0 +1,7 @@
+end({from=bottom,to=top})  waterway             tunnel(1,bottom)       tree
+street({top,right})        waterway             street({left,bottom})  tree
+tunnel(1,left)             waterway             street({top,bottom})   tree
+street({top,bottom})       waterway             street({top,bottom})   street({top,bottom})
+street({top,bottom})       waterway             waterway               street({top,bottom})
+street({top,bottom})       street({top,right})  waterway               start({from=bottom,to=top})
+
