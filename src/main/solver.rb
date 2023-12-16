@@ -153,7 +153,7 @@ class Solver
         cell.blocked_directions.any? do |blocked_direction|
             neighbor_cell = answer_field[row][column].neighbor(blocked_direction)
             reverse_direction = Cell.reverse_direction(blocked_direction)
-            neighbor_cell.passable? && neighbor_cell.directions.include?(reverse_direction)
+            neighbor_cell.directions.include?(reverse_direction)
         end
     end
 
