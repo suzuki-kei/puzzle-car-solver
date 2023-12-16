@@ -75,11 +75,10 @@ class Solver
     end
 
     def find_cross_street_cell_position(answer_field, cross_street_cell)
-        answer_field.cells.select(&:empty?).each do |cell|
-            if cell.neighbors.size == 4 && cell.neighbors.all?(&:maybe_passable?)
-                return [cell.row, cell.column]
-            end
+        cell = answer_field.cells.select(&:empty?).find do |cell|
+            cell.neighbors.size == 4 && cell.neighbors.all?(&:maybe_passable?)
         end
+        [cell.row, cell.column]
     end
 
     def traverse(answer_field, cells, cache=Hash.new, attempts=0)
