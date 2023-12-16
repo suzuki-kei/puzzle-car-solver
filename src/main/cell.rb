@@ -88,6 +88,22 @@ module Cell
         end
     end
 
+    # 隣接するセルが接続されているか判定する.
+    # 前のセルを exit_direction 方向に退出し, 次のセルに enter_direction 方向から進入できる場合は true.
+    def self.direction_connected?(exit_direction, enter_direction)
+        exit_direction == reverse_direction(enter_direction)
+    end
+
+    def self.reverse_direction(direction)
+        map = {
+            :top    => :bottom,
+            :bottom => :top,
+            :left   => :right,
+            :right  => :left,
+        }
+        map.fetch(direction)
+    end
+
     # Null はフィールド外, Empty は未確定セルを表す.
     Null     = new_cell_class(fields=%i(),             movable=false, passable=false)
     Empty    = new_cell_class(fields=%i(),             movable=true,  passable=false)

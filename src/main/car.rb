@@ -102,14 +102,7 @@ class Car
     end
 
     def validate_direction_connectivity(from, to)
-        valid_direction_pairs = [
-            [:top, :bottom],
-            [:bottom, :top],
-            [:left, :right],
-            [:right, :left],
-        ]
-
-        unless valid_direction_pairs.include?([from, to])
+        unless Cell.direction_connected?(from, to)
             raise CarCrushed
         end
     end
@@ -131,28 +124,18 @@ class Car
 
     def find_two_way(cell, previous_to)
         two_way = cell.two_ways.find do |two_way|
-            two_way.include?(reverse_direction(previous_to))
+            two_way.include?(Cell.reverse_direction(previous_to))
         end
 
         if two_way.nil?
             raise CarCrushed
         end
 
-        if two_way[0] == reverse_direction(previous_to)
+        if two_way[0] == Cell.reverse_direction(previous_to)
             two_way
         else
             two_way.reverse
         end
-    end
-
-    def reverse_direction(direction)
-        map = {
-            :top    => :bottom,
-            :bottom => :top,
-            :left   => :right,
-            :right  => :left,
-        }
-        map.fetch(direction)
     end
 
 end
