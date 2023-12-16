@@ -55,22 +55,12 @@ class Solver
     end
 
     def find_stop_cell_position(answer_field, stop_cell)
-        crossing_cell = answer_field.cells.select(&:crossing?).find do |crossing_cell|
-            stop_cell.to == crossing_cell.to
+        crossing_cell = answer_field.cells.find do |cell|
+            cell.crossing? && cell.to == stop_cell.to && cell.neighbor(cell.from).empty?
         end
 
-        case crossing_cell.from
-            when :top
-                [crossing_cell.row - 1, crossing_cell.column]
-            when :bottom
-                [crossing_cell.row + 1, crossing_cell.column]
-            when :left
-                [crossing_cell.row, crossing_cell.column - 1]
-            when :right
-                [crossing_cell.row, crossing_cell.column + 1]
-            else
-                raise "BUG: from=#{crossing_cell.from}"
-        end
+        empty_cell = crossing_cell.neighbor(crossing_cell.from)
+        [empty_cell.row, empty_cell.column]
     end
 
     def place_cross_street_cells(answer_field, cross_street_cells)
