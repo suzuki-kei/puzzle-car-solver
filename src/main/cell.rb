@@ -62,6 +62,18 @@ module Cell
                 end
             end
 
+            # このセルに進入可能な方向.
+            def directions
+                %i(from to direction two_ways).map {|name|
+                    instance_variable_get("@#{name}")
+                }.flatten.reject(&:nil?)
+            end
+
+            # このセルに進入できない方向.
+            def blocked_directions
+                %i(top bottom left right) - directions
+            end
+
             def ==(other)
                 equal_class?(other) && equal_all_fields?(other)
             end

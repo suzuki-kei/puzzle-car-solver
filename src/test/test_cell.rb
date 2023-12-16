@@ -16,6 +16,32 @@ class CellTestCase < Test::Unit::TestCase
         assert_equal :waterway, Cell::Waterway.new.name
     end
 
+    def test_directions
+        assert_equal %i(),           Cell::Null.new.directions
+        assert_equal %i(),           Cell::Empty.new.directions
+        assert_equal %i(top bottom), Cell::Start.new(from=:top, to=:bottom).directions
+        assert_equal %i(top bottom), Cell::End.new(from=:top, to=:bottom).directions
+        assert_equal %i(top bottom), Cell::Street.new([[:top, :bottom]]).directions
+        assert_equal %i(top bottom), Cell::Crossing.new(from=:top, to=:bottom).directions
+        assert_equal %i(top bottom), Cell::Stop.new(from=:top, to=:bottom).directions
+        assert_equal %i(top),        Cell::Tunnel.new(1, :top).directions
+        assert_equal %i(),           Cell::Tree.new.directions
+        assert_equal %i(),           Cell::Waterway.new.directions
+    end
+
+    def test_blocked_directions
+        assert_equal %i(top bottom left right), Cell::Null.new.blocked_directions
+        assert_equal %i(top bottom left right), Cell::Empty.new.blocked_directions
+        assert_equal %i(left right),            Cell::Start.new(from=:top, to=:bottom).blocked_directions
+        assert_equal %i(left right),            Cell::End.new(from=:top, to=:bottom).blocked_directions
+        assert_equal %i(left right),            Cell::Street.new([[:top, :bottom]]).blocked_directions
+        assert_equal %i(left right),            Cell::Crossing.new(from=:top, to=:bottom).blocked_directions
+        assert_equal %i(left right),            Cell::Stop.new(from=:top, to=:bottom).blocked_directions
+        assert_equal %i(bottom left right),     Cell::Tunnel.new(1, :top).blocked_directions
+        assert_equal %i(top bottom left right), Cell::Tree.new.blocked_directions
+        assert_equal %i(top bottom left right), Cell::Waterway.new.blocked_directions
+    end
+
     def test_operator_equals
         assert_true Cell::Empty.new == Cell::Empty.new
         assert_true Cell::Street.new([[:top, :bottom]]) == Cell::Street.new([[:top, :bottom]])

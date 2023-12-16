@@ -121,33 +121,39 @@ class Solver
     end
 
     def can_be_placed?(answer_field, row, column, cell)
-        # Cell::Empty の場合は通過できるか未確定なので,
-        # 通過できる場合と通過できない場合の両方を考慮して判断する.
-        lower = cell.neighbors.count(&:passable?)
-        upper = cell.neighbors.count(&:maybe_passable?)
-
-        (lower..upper).any? do |count|
-            case count
-                when 1
-                    tunnel_cell_can_be_placed?(answer_field, row, column, cell)
-                when 2, 3, 4
-                    tunnel_cell_can_be_placed?(answer_field, row, column, cell) ||
-                        street_cell_can_be_placed?(answer_field, row, column, cell)
-                else
-                    false
-            end
-        end
+        tunnel_cell_can_be_placed?(answer_field, row, column, cell) ||
+            street_cell_can_be_placed?(answer_field, row, column, cell)
     end
 
     # cell が answer_field[row][column] に配置可能な Cell::Tunnel の場合に true.
     def tunnel_cell_can_be_placed?(answer_field, row, column, cell)
-        cell.tunnel? && answer_field[row][column].neighbor(cell.direction).maybe_passable?
+        cell.tunnel? &&
+            !blocked_by_neighbor_cells?(answer_field, row, column, cell) &&
+            !block_neighbor_cells?(answer_field, row, column, cell)
     end
 
     # cell が answer_field[row][column] に配置可能な Cell::Street の場合に true.
     def street_cell_can_be_placed?(answer_field, row, column, cell)
-        cell.street? && cell.two_ways.flatten.all? do |direction|
-            answer_field[row][column].neighbor(direction).maybe_passable?
+        cell.street? &&
+            !blocked_by_neighbor_cells?(answer_field, row, column, cell) &&
+            !block_neighbor_cells?(answer_field, row, column, cell)
+    end
+
+    # cell への進入方向が隣接セルに塞がれると確定する場合は false を返す.
+    def blocked_by_neighbor_cells?(answer_field, row, column, cell)
+        cell.directions.any? do |direction|
+            neighbor_cell = answer_field[row][column].neighbor(direction)
+            reverse_direction = Cell.reverse_direction(direction)
+            !neighbor_cell.empty? && !neighbor_cell.directions.include?(reverse_direction)
+        end
+    end
+
+    # 隣接セルの進行方向を塞ぐ場合は false を返す.
+    def block_neighbor_cells?(answer_field, row, column, cell)
+        cell.blocked_directions.any? do |blocked_direction|
+            neighbor_cell = answer_field[row][column].neighbor(blocked_direction)
+            reverse_direction = Cell.reverse_direction(blocked_direction)
+            neighbor_cell.passable? && neighbor_cell.directions.include?(reverse_direction)
         end
     end
 
