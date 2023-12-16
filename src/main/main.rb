@@ -3,17 +3,13 @@ require 'field'
 require 'solver'
 
 def main
-    file_path = 'data/problem-11.txt'
-
-    initial_field = Field.from_file(file_path)
-    puts "==== initial field (file_path=#{file_path})"
-    puts initial_field.serialize
-    puts
-
-    solved_field, attempts = Solver.new.solve(initial_field)
-    puts "==== solved field (attempts=#{attempts})"
-    puts solved_field.serialize if solved_field
-    puts
+    Dir['data/sample-problem-*.txt', 'data/problem-*.txt'].each do |file_path|
+        puts "==== #{file_path}"
+        initial_field = Field.from_file(file_path)
+        solved_field, attempts = Solver.new.solve(initial_field)
+        puts "attempts = #{attempts}"
+        puts solved_field.serialize.gsub(/^/, '    ')
+    end
 rescue Interrupt
     # Ctrl+C で終了した場合はスタックトレースを出さずに終了する.
 end
