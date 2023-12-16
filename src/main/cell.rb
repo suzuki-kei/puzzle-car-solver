@@ -54,7 +54,7 @@ module Cell
                 passable
             end
 
-            def may_be_passable?
+            def maybe_passable?
                 empty? || passable?
             end
 

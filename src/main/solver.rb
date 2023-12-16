@@ -86,7 +86,7 @@ class Solver
 
     def find_cross_street_cell_position(answer_field, cross_street_cell)
         answer_field.cells.select(&:empty?).each do |cell|
-            if cell.neighbors.size == 4 && cell.neighbors.all?(&:may_be_passable?)
+            if cell.neighbors.size == 4 && cell.neighbors.all?(&:maybe_passable?)
                 return [cell.row, cell.column]
             end
         end
@@ -124,7 +124,7 @@ class Solver
         # Cell::Empty の場合は通過できるか未確定なので,
         # 通過できる場合と通過できない場合の両方を考慮して判断する.
         lower = cell.neighbors.count(&:passable?)
-        upper = cell.neighbors.count(&:may_be_passable?)
+        upper = cell.neighbors.count(&:maybe_passable?)
 
         (lower..upper).any? do |count|
             case count
@@ -141,13 +141,13 @@ class Solver
 
     # cell が answer_field[row][column] に配置可能な Cell::Tunnel の場合に true.
     def placeable_tunnel_cell?(answer_field, row, column, cell)
-        cell.tunnel? && answer_field[row][column].neighbor(cell.direction).may_be_passable?
+        cell.tunnel? && answer_field[row][column].neighbor(cell.direction).maybe_passable?
     end
 
     # cell が answer_field[row][column] に配置可能な Cell::Street の場合に true.
     def placeable_street_cell?(answer_field, row, column, cell)
         cell.street? && cell.two_ways.flatten.all? do |direction|
-            answer_field[row][column].neighbor(direction).may_be_passable?
+            answer_field[row][column].neighbor(direction).maybe_passable?
         end
     end
 
