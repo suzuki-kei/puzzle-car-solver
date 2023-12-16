@@ -50,8 +50,8 @@ class PositionedCell
     end
 
     def method_missing(name, *arguments)
-        if cell.respond_to?(name)
-            cell.send(name, *arguments)
+        if @cell.respond_to?(name)
+            @cell.send(name, *arguments)
         else
             super
         end
