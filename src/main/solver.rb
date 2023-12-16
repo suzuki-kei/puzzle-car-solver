@@ -1,4 +1,4 @@
-require 'runner'
+require 'car'
 
 class Solver
 
@@ -31,7 +31,7 @@ class Solver
 
     def solved?(field)
         begin
-            Runner.new(field).run!
+            Car.new(field).run!
         rescue CarCrushed
             false
         end

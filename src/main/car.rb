@@ -1,6 +1,6 @@
 require 'exception'
 
-class Runner
+class Car
 
     Step = Data.define(:cell, :from, :to) do
 
