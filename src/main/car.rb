@@ -81,9 +81,15 @@ class Car
     end
 
     def move_from_tunnel
-        from_tunnel_cell = @cell
-        to_tunnel_cell = @field.other_side_tunnel_cell(from_tunnel_cell)
-        from, to = from_tunnel_cell.direction, to_tunnel_cell.direction
+        other_side_tunnel_cell = @field.other_side_tunnel_cell(@cell)
+        from, to = @cell.direction, other_side_tunnel_cell.direction
+
+        # トンネルは隣接しないセルに移動するので move_to() は呼ばずに個別調整する.
+        @steps << Step.new(@cell, from, to)
+        @cell = other_side_tunnel_cell
+
+        # 次の繰り返しで move_from_tunnel に来ると無限ループするので次のセルに進める.
+        from, to = Cell.reverse_direction(@cell.direction), @cell.direction
         move_to(from, to)
     end
 
@@ -98,27 +104,12 @@ class Car
     def move_to(from, to)
         validate_direction_connectivity(from, @steps[-1].to) unless @steps.empty?
         @steps << Step.new(@cell, from, to)
-        @cell = next_cell(to)
+        @cell = @cell.neighbor(to)
     end
 
     def validate_direction_connectivity(from, to)
         unless Cell.direction_connected?(from, to)
             raise CarCrushed
-        end
-    end
-
-    def next_cell(to)
-        case to
-            when :top
-                @field[@cell.row - 1][@cell.column]
-            when :bottom
-                @field[@cell.row + 1][@cell.column]
-            when :left
-                @field[@cell.row][@cell.column - 1]
-            when :right
-                @field[@cell.row][@cell.column + 1]
-            else
-                raise "BUG: row=#{@cell.row}, column=#{@cell.column}, to=#{to}"
         end
     end
 

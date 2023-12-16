@@ -29,5 +29,23 @@ class CarTestCase < Test::Unit::TestCase
         end
     end
 
+    # トンネルを含むフィールドを扱えることのテスト.
+    # 過去に問題 03 で動作確認している時にトンネルを正しく扱えない不具合が見つかった.
+    def test_problem_03_run!
+        # トンネルを含むフィールド (問題 03 の正解データ)
+        field = FieldDeserializer.new.deserialize(<<-'EOS')
+            end({from=bottom,to=top})  waterway        tunnel(1,bottom)      tree
+            street({top,bottom})       waterway        street({top,bottom})  tree
+            street({top,bottom})       waterway        street({top,bottom})  tree
+            street({top,bottom})       waterway        street({top,right})   street({left,bottom})
+            street({top,bottom})       waterway        waterway              street({top,bottom})
+            street({top,right})        tunnel(1,left)  waterway              start({from=bottom,to=top})
+        EOS
+
+        assert_nothing_raised do
+            Car.new(field).run!
+        end
+    end
+
 end
 
