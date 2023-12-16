@@ -1,0 +1,8 @@
+end({from=bottom,to=top})       tree                  tree                               tree
+street({top,bottom})            tree                  street({bottom,right})             street({left,bottom})
+crossing({from=bottom,to=top})  tree                  street({top,right})                street({top,bottom})
+stop({from=bottom,to=top})      tree                  street({top,bottom})               crossing({from=top,to=bottom})
+street({top,left})              street({top,bottom})  stop({from=top,to=bottom})         street({left,right})
+waterway                        waterway              street({top,bottom},{left,right})  tree
+waterway                        waterway              start({from=bottom,to=top})        tree
+
