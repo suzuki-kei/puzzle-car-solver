@@ -19,20 +19,14 @@ module Cell
             attr_reader *fields
 
             def initialize(*arguments, **keyword_arguments)
-                arguments.each_with_index do |value, index|
-                    instance_variable_set("@#{fields[index]}", value)
-                end
-
-                keyword_arguments.each do |key, name|
-                    if !fields.include?(key)
-                        raise "invalid keyword argument: key=[#{key}]"
+                Hash[fields.zip(arguments)].update(keyword_arguments).each do |key, value|
+                    unless fields.include?(key)
+                        raise ArgumentError, "invalid keyword argument: key=[#{key}]"
                     end
-                end
-
-                fields.each do |name|
-                    if keyword_arguments.key?(name)
-                        instance_variable_set("@#{name}", keyword_arguments[name])
+                    if value.nil?
+                        raise ArgumentError, "#{key} must not be nil."
                     end
+                    instance_variable_set("@#{key}", value)
                 end
             end
 

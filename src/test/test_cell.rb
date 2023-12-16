@@ -6,12 +6,12 @@ class CellTestCase < Test::Unit::TestCase
     def test_name
         assert_equal :null,     Cell::Null.new.name
         assert_equal :empty,    Cell::Empty.new.name
-        assert_equal :start,    Cell::Start.new.name
-        assert_equal :end,      Cell::End.new.name
-        assert_equal :street,   Cell::Street.new.name
-        assert_equal :crossing, Cell::Crossing.new.name
-        assert_equal :stop,     Cell::Stop.new.name
-        assert_equal :tunnel,   Cell::Tunnel.new.name
+        assert_equal :start,    Cell::Start.new(from=:top, to=:bottom).name
+        assert_equal :end,      Cell::End.new(from=:top, to=:bottom).name
+        assert_equal :street,   Cell::Street.new([[:top, :bottom]]).name
+        assert_equal :crossing, Cell::Crossing.new(from=:top, to=:bottom).name
+        assert_equal :stop,     Cell::Stop.new(from=:top, to=:bottom).name
+        assert_equal :tunnel,   Cell::Tunnel.new(1, :top).name
         assert_equal :tree,     Cell::Tree.new.name
         assert_equal :waterway, Cell::Waterway.new.name
     end
