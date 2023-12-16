@@ -31,7 +31,7 @@ class Solver
 
     def solved?(field)
         begin
-            !!Runner.new.run(field)
+            Runner.new(field).run!
         rescue CarCrushed
             false
         end
