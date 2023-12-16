@@ -69,7 +69,7 @@ class Solver
             when :right
                 [crossing_cell.row, crossing_cell.column + 1]
             else
-                raise 'BUG'
+                raise "BUG: from=#{crossing_cell.from}"
         end
     end
 

@@ -35,7 +35,7 @@ class PositionedCell
             when :right
                 @field[@row][@column + 1]
             else
-                raise 'BUG'
+                raise "BUG: direction=#{direction}"
         end
     end
 
