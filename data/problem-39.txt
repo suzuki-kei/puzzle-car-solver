@@ -1,0 +1,12 @@
+tree                  tree                               tree                               street({top,bottom},{left,right})  tree                            tree                               tree
+tree                  street({top,right})                street({top,bottom},{left,right})  street({right,bottom})             street({left,right})            street({left,bottom})              street({left,right})
+tree                  street({top,bottom},{left,right})  street({left,right})               street({top,bottom},{left,right})  crossing({from=right,to=left})  stop({from=right,to=left})         street({left,bottom})
+tree                  street({left,right})               street({right,bottom})             tunnel(1,top)                      street({top,left})              street({left,right})               street({left,right})
+tree                  street({top,bottom})               tree                               street({top,bottom})               tree                            tree                               tree
+street({left,right})  street({left,right})               street({right,bottom})             street({left,top})                 tunnel(2,right)                 street({left,right})               end({from=left,to=right})
+tree                  street({top,bottom})               tree                               tree                               street({top,bottom})            tree                               tree
+tree                  street({left,right})               street({top,right})                street({left,right})               street({left,right})            street({bottom,right})             street({top,bottom},{left,right})
+tree                  street({top,bottom},{left,right})  stop({from=left,to=right})         crossing({from=left,to=right})     street({left,right})            street({top,bottom},{left,right})  street({left,right})
+tree                  street({top,right})                street({left,right})               street({top,left})                 tunnel(2,left)                  street({left,right})               start({from=right,to=left})
+tree                  tree                               tree                               tree                               tunnel(1,bottom)                tree                               tree
+
