@@ -1,0 +1,9 @@
+tree                    tree                               end({from=bottom,to=top})          tree                   tree                    tree
+tree                    street({top,bottom})               street({left,top})                 street({left,bottom})  street({left,right})    tree
+tree                    street({top,bottom},{left,right})  street({top,bottom},{left,right})  tree                   street({top,right})     tree
+tree                    street({top,bottom})               street({left,right})               street({left,top})     street({top,bottom})    start({from=right,to=left})
+tree                    tree                               street({top,right})                tree                   street({right,bottom})  tree
+street({right,bottom})  street({top,bottom},{left,right})  street({left,right})               street({left,right})   street({top,bottom})    tree
+street({left,right})    street({top,bottom})               street({top,bottom},{left,right})  waterway               waterway                waterway
+tree                    tree                               tree                               waterway               waterway                waterway
+
