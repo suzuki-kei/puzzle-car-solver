@@ -4,7 +4,7 @@ class Solver
 
     def solve(initial_field)
         cells = initial_field.cells
-        answer_field = new_empty_field(initial_field)
+        answer_field = Field.new_empty_field(*initial_field.size)
 
         # 動かせないセルを initial_field と同じ場所に配置する.
         fixed_cells, cells = cells.partition(&:fixed?)
@@ -20,10 +20,6 @@ class Solver
     end
 
     private
-
-    def new_empty_field(initial_field)
-        Field.new_empty_field(initial_field.row_size, initial_field.column_size)
-    end
 
     def solved?(field)
         begin
