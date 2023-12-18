@@ -14,10 +14,6 @@ class Solver
         stop_cells, cells = cells.partition(&:stop?)
         place_stop_cells(answer_field, stop_cells)
 
-        # 十字路を配置する.
-        cross_street_cells, cells = cells.partition(&:cross_street?)
-        place_cross_street_cells(answer_field, cross_street_cells)
-
         # 残りのセルを総当たりで配置し, 正解を探す.
         solved, attempts = traverse(answer_field, cells)
         [(solved ? answer_field : nil), attempts]
@@ -61,24 +57,6 @@ class Solver
 
         empty_cell = crossing_cell.neighbor(crossing_cell.from)
         [empty_cell.row, empty_cell.column]
-    end
-
-    def place_cross_street_cells(answer_field, cross_street_cells)
-        cross_street_cells.each do |cross_street_cell|
-            place_cross_street_cell(answer_field, cross_street_cell)
-        end
-    end
-
-    def place_cross_street_cell(answer_field, cross_street_cell)
-        row, column = find_cross_street_cell_position(answer_field, cross_street_cell)
-        answer_field[row][column] = cross_street_cell
-    end
-
-    def find_cross_street_cell_position(answer_field, cross_street_cell)
-        cell = answer_field.cells.select(&:empty?).find do |cell|
-            cell.neighbors.size == 4 && cell.neighbors.all?(&:maybe_passable?)
-        end
-        [cell.row, cell.column]
     end
 
     def traverse(answer_field, cells, cache=Hash.new, attempts=0)
