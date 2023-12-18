@@ -110,6 +110,10 @@ module Cell
         map.fetch(direction)
     end
 
+    def self.straight_way?(from, to)
+        from == reverse_direction(to)
+    end
+
     # Null はフィールド外, Empty は未確定セルを表す.
     Null     = new_cell_class(fields=%i(),             movable=false, passable=false)
     Empty    = new_cell_class(fields=%i(),             movable=true,  passable=false)

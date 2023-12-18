@@ -42,18 +42,24 @@ class FieldDeserializer
                 Cell::Empty.new
             when /\Astart\(#{re_one_way}\)\z/
                 from, to = $~[1..].map(&:to_sym)
+                validate_straight_way(from, to)
                 Cell::Start.new(from, to)
             when /\Aend\(#{re_one_way}\)\z/
                 from, to = $~[1..].map(&:to_sym)
+                validate_straight_way(from, to)
                 Cell::End.new(from, to)
             when /\Astreet\(#{re_two_ways}\)\z/
                 two_ways = $&.scan(re_two_way).map{|matches| matches.map(&:to_sym)}
+                validate_straight_way(*two_ways[0]) if two_ways.size == 2
+                validate_straight_way(*two_ways[1]) if two_ways.size == 2
                 Cell::Street.new(two_ways)
             when /\Acrossing\(#{re_one_way}\)\z/
                 from, to = $~[1..].map(&:to_sym)
+                validate_straight_way(from, to)
                 Cell::Crossing.new(from, to)
             when /\Astop\(#{re_one_way}\)\z/
                 from, to = $~[1..].map(&:to_sym)
+                validate_straight_way(from, to)
                 Cell::Stop.new(from, to)
             when /\Atunnel\(#{re_id},#{re_direction}\)\z/
                 id, direction = $~[1..].map(&:to_sym)
@@ -64,6 +70,13 @@ class FieldDeserializer
                 Cell::Waterway.new
             else
                 raise InvalidCellDefinition, serialized_cell
+        end
+    end
+
+    # 直進になっていることを検証する.
+    def validate_straight_way(from, to)
+        unless Cell.straight_way?(from, to)
+            raise InvalidCellDefinition
         end
     end
 
