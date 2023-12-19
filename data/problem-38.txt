@@ -1,10 +1,10 @@
-tree                            tunnel(1,bottom)                   tunnel(2,top)         waterway  street({top,bottom})            stop({from=bottom,to=top})      tree
+tree                            tunnel({1,bottom})                 tunnel({2,top})       waterway  street({top,bottom})            stop({from=bottom,to=top})      tree
 tree                            stop({from=top,to=bottom})         street({top,bottom})  waterway  street({top,bottom})            street({top,bottom})            tree
 tree                            crossing({from=bottom,to=top})     street({top,bottom})  waterway  street({right,bottom})          street({top,bottom})            tree
-tree                            stop({from=top,to=bottom})         tunnel(3,bottom)      waterway  crossing({from=top,to=bottom})  street({top,bottom})            tree
-street({top,bottom})            street({top,bottom})               street({top,bottom})  waterway  street({top,bottom})            tunnel(1,bottom)                tunnel(2,bottom)
+tree                            stop({from=top,to=bottom})         tunnel({3,bottom})    waterway  crossing({from=top,to=bottom})  street({top,bottom})            tree
+street({top,bottom})            street({top,bottom})               street({top,bottom})  waterway  street({top,bottom})            tunnel({1,bottom})              tunnel({2,bottom})
 crossing({from=bottom,to=top})  stop({from=bottom,to=top})         waterway              waterway  waterway                        street({top,bottom})            street({top,bottom})
 street({top,right})             street({top,bottom})               waterway              waterway  waterway                        street({top,left})              street({top,bottom})
-street({top,bottom})            tunnel(3,top)                      waterway              waterway  waterway                        crossing({from=top,to=bottom})  street({top,bottom},{left,right})
+street({top,bottom})            tunnel({3,top})                    waterway              waterway  waterway                        crossing({from=top,to=bottom})  street({top,bottom},{left,right})
 start({from=bottom,to=top})     street({top,bottom},{left,right})  waterway              waterway  waterway                        end({from=top,to=bottom})       street({left,bottom})
 

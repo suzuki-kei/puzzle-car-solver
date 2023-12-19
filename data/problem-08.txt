@@ -1,8 +1,8 @@
-tunnel(1,right)              street({left,right})  crossing({from=left,to=right})  end({from=left,to=right})
+tunnel({1,right})            street({left,right})  crossing({from=left,to=right})  end({from=left,to=right})
 tree                         tree                  tree                            tree
-stop({from=left,to=right})   tunnel(2,left)        crossing({from=left,to=right})  street({left,right})
+stop({from=left,to=right})   tunnel({2,left})      crossing({from=left,to=right})  street({left,right})
 tree                         tree                  tree                            tree
-stop({from=left,to=right})   tunnel(2,right)       crossing({from=left,to=right})  tunnel(3,right)
+stop({from=left,to=right})   tunnel({2,right})     crossing({from=left,to=right})  tunnel({3,right})
 tree                         tree                  tree                            tree
-start({from=left,to=right})  tunnel(3,left)        stop({from=left,to=right})      tunnel(1,left)
+start({from=left,to=right})  tunnel({3,left})      stop({from=left,to=right})      tunnel({1,left})
 

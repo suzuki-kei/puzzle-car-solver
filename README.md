@@ -31,7 +31,7 @@ Nintendo Switch のゲーム「Puzzle Car」を解くプログラムです.
     <stop> ::= "stop(" <one-way> ")"
 
     <tunnel> :: トンネル (<id> が同じトンネル同士が繋がる)
-    <tunnel> ::= "tunnel(" <id> "," <direction> ")"
+    <tunnel> ::= "tunnel({" <id> "," <direction> "})"
 
     <tree> :: 木 (通行不可)
     <tree> ::= "tree"

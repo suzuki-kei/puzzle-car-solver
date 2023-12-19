@@ -61,7 +61,7 @@ class FieldDeserializer
                 from, to = $~[1..].map(&:to_sym)
                 validate_straight_way(from, to)
                 Cell::Stop.new(from, to)
-            when /\Atunnel\(#{re_id},#{re_direction}\)\z/
+            when /\Atunnel\({#{re_id},#{re_direction}}\)\z/
                 id, direction = $~[1..].map(&:to_sym)
                 Cell::Tunnel.new(id, direction)
             when /\Atree\z/

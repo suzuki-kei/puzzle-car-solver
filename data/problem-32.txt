@@ -3,9 +3,9 @@ tree  stop({from=top,to=bottom})      street({left,right})               street(
 tree  street({top,left})              street({top,bottom},{left,right})  tree                  crossing({from=bottom,to=top})     street({top,left})                 tree
 tree  stop({from=top,to=bottom})      crossing({from=top,to=bottom})     tree                  street({top,bottom})               street({top,bottom})               tree
 tree  street({right,bottom})          stop({from=bottom,to=top})         tree                  street({right,bottom})             street({top,bottom})               tree
-tree  tunnel(1,bottom)                street({top,right})                tree                  street({top,bottom},{left,right})  street({top,bottom})               tree
+tree  tunnel({1,bottom})              street({top,right})                tree                  street({top,bottom},{left,right})  street({top,bottom})               tree
 tree  street({top,left})              street({left,right})               tree                  stop({from=bottom,to=top})         crossing({from=bottom,to=top})     tree
 tree  crossing({from=top,to=bottom})  street({top,bottom})               tree                  street({top,bottom})               street({top,bottom},{left,right})  tree
-tree  tunnel(1,top)                   street({right,bottom})             street({top,right})   street({left,bottom})              street({top,bottom},{left,right})  tree
+tree  tunnel({1,top})                 street({right,bottom})             street({top,right})   street({left,bottom})              street({top,bottom},{left,right})  tree
 tree  tree                            start({from=bottom,to=top})        tree                  street({left,bottom})              tree                               tree
 

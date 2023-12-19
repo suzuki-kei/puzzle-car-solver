@@ -1,8 +1,8 @@
 tree                            street({left,right})            tree                        stop({from=bottom,to=top})         tree                 end({from=bottom,to=top})          tree
-tunnel(1,bottom)                tunnel(2,top)                   street({top,left})          street({top,bottom},{left,right})  tree                 street({top,bottom},{left,right})  tree
-crossing({from=bottom,to=top})  street({right,bottom})          tree                        stop({from=top,to=bottom})         street({top,left})   tunnel(1,top)                      tree
+tunnel({1,bottom})              tunnel({2,top})                 street({top,left})          street({top,bottom},{left,right})  tree                 street({top,bottom},{left,right})  tree
+crossing({from=bottom,to=top})  street({right,bottom})          tree                        stop({from=top,to=bottom})         street({top,left})   tunnel({1,top})                    tree
 street({left,bottom})           crossing({from=top,to=bottom})  tree                        crossing({from=bottom,to=top})     tree                 street({right,bottom})             street({top,left})
-street({top,bottom})            street({left,right})            tree                        street({right,bottom})             tree                 crossing({from=bottom,to=top})     tunnel(2,bottom)
+street({top,bottom})            street({left,right})            tree                        street({right,bottom})             tree                 crossing({from=bottom,to=top})     tunnel({2,bottom})
 tree                            street({left,right})            stop({from=top,to=bottom})  street({right,bottom})             tree                 street({top,bottom})               crossing({from=top,to=bottom})
 tree                            street({right,bottom})          tree                        street({top,left})                 street({top,right})  stop({from=bottom,to=top})         street({top,left})
 tree                            stop({from=bottom,to=top})      tree                        street({left,right})               tree                 start({from=bottom,to=top})        tree

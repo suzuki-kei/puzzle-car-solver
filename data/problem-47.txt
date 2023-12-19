@@ -1,10 +1,10 @@
 tree                         street({top,bottom})        tree                    street({right,bottom})             street({top,left})              tree                  street({top,bottom},{left,right})  tree
-tunnel(1,bottom)             street({top,bottom})        street({top,bottom})    street({top,bottom})               street({top,left})              tunnel(2,bottom)      street({top,bottom})               end({from=left,to=right})
+tunnel({1,bottom})           street({top,bottom})        street({top,bottom})    street({top,bottom})               street({top,left})              tunnel({2,bottom})    street({top,bottom})               end({from=left,to=right})
 tree                         street({right,bottom})      tree                    tree                               tree                            tree                  street({top,bottom})               tree
-tree                         street({left,right})        street({top,bottom})    tree                               tree                            tunnel(2,right)       street({top,right})                tree
+tree                         street({left,right})        street({top,bottom})    tree                               tree                            tunnel({2,right})     street({top,right})                tree
 street({left,bottom})        street({top,right})         street({left,bottom})   tree                               tree                            street({top,bottom})  street({left,bottom})              street({top,bottom})
-street({left,right})         stop({from=left,to=right})  tunnel(1,bottom)        crossing({from=right,to=left})     street({left,right})            street({top,left})    tunnel(3,top)                      street({left,right})
-street({top,bottom})         street({top,right})         street({right,bottom})  street({top,bottom},{left,right})  crossing({from=left,to=right})  tunnel(3,bottom)      street({top,left})                 street({top,bottom})
+street({left,right})         stop({from=left,to=right})  tunnel({1,bottom})      crossing({from=right,to=left})     street({left,right})            street({top,left})    tunnel({3,top})                    street({left,right})
+street({top,bottom})         street({top,right})         street({right,bottom})  street({top,bottom},{left,right})  crossing({from=left,to=right})  tunnel({3,bottom})    street({top,left})                 street({top,bottom})
 street({top,bottom})         waterway                    waterway                waterway                           waterway                        waterway              waterway                           street({top,right})
 start({from=bottom,to=top})  waterway                    waterway                waterway                           waterway                        waterway              waterway                           stop({from=right,to=left})
 

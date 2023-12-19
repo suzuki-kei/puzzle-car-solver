@@ -52,7 +52,7 @@ class FieldSerializer
             when cell.stop?
                 "#{cell.name}({from=#{cell.from},to=#{cell.to}})"
             when cell.tunnel?
-                "#{cell.name}(#{cell.id},#{cell.direction})"
+                "#{cell.name}({#{cell.id},#{cell.direction}})"
             when cell.tree?
                 "#{cell.name}"
             when cell.waterway?
