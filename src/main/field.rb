@@ -1,5 +1,6 @@
 require 'exception'
 require 'field_deserializer'
+require 'field_normalizer'
 require 'field_serializer'
 require 'positioned_cell'
 
@@ -41,6 +42,10 @@ class Field
 
     def initialize(rows)
         @rows = PositionedCell.peel_rows(rows)
+    end
+
+    def clone
+        self.class.new(@rows.map(&:clone))
     end
 
     def ==(other)
@@ -89,6 +94,10 @@ class Field
         enumerator.select(&:tunnel?).find do |tunnel_cell|
             tunnel_cell != from_tunnel_cell && tunnel_cell.id == from_tunnel_cell.id
         end
+    end
+
+    def normalize
+        FieldNormalizer.new.normalize(self)
     end
 
     def serialize
