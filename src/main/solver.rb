@@ -83,7 +83,7 @@ class Solver
                 @attempts += 1
                 puts "[DEBUG] attempts=#{@attempts}" if @attempts % 1000 == 0
 
-                solved = cached(row, column, cell) do
+                solved = cached(row, column, cell, cells) do
                     if can_be_placed?(row, column, cell)
                         @answer_field[row][column] = cell
                         traverse(cells.take(i) + cells.drop(i + 1))
@@ -103,7 +103,15 @@ class Solver
         end
     end
 
-    def cached(row, column, cell)
+    def cached(row, column, cell, unplaced_cells)
+        cell = PositionedCell.peel_cell(cell)
+        unplaced_cells = PositionedCell.peel_cells(unplaced_cells)
+
+        # 同じセルが存在しない場合は同じ盤面は出現しないのでキャッシュしない.
+        if unplaced_cells.count(cell) < 2
+            return yield
+        end
+
         @answer_field[row][column] = cell
         cache_key = @answer_field.hash
         @answer_field[row][column] = Cell::Empty.new

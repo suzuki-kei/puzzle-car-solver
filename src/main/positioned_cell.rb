@@ -9,6 +9,10 @@ class PositionedCell
         row.map(&method(:peel_cell))
     end
 
+    def self.peel_cells(cells)
+        cells.map(&method(:peel_cell))
+    end
+
     def self.peel_cell(cell)
         while cell.class == self
             cell = cell.cell
