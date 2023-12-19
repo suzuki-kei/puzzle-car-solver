@@ -1,11 +1,14 @@
 require 'exception'
 require 'field'
+require 'pathname'
 require 'solver'
 
 class Application
 
     ROOT_DIR = File.absolute_path("#{File.dirname(__FILE__)}/../..")
-    DATA_DIR = File.absolute_path("#{ROOT_DIR}/data")
+    DATA_DIR = "#{ROOT_DIR}/data"
+    TARGET_DIR = "#{ROOT_DIR}/target"
+    SOLVED_DATA_DIR = "#{TARGET_DIR}/solved"
 
     def run
         subcommand = ARGV.first || 'solve'
@@ -26,27 +29,37 @@ class Application
     end
 
     def solve_problems
-        problem_file_paths.each do |file_path|
-            puts "==== #{file_path}"
-            initial_field = Field.from_file(file_path)
+        Pathname.new(SOLVED_DATA_DIR).mkpath
+
+        problem_file_pathnames.each do |pathname|
+            puts "==== #{pathname.basename}"
+            initial_field = Field.from_file(pathname)
             solved_field, attempts = Solver.new(initial_field).solve
             puts "attempts = #{attempts}"
-            puts solved_field.serialize.gsub(/^/, '    ')
+
+            open("#{SOLVED_DATA_DIR}/#{pathname.basename}", 'w') do |file|
+                file.puts solved_field.serialize
+                file.puts
+            end
         end
     end
 
     def normalize_problem_files
-        problem_file_paths.each do |file_path|
-            field = Field.from_file(file_path)
-            open(file_path, 'w') do |file|
+        problem_file_pathnames.each do |pathname|
+            field = Field.from_file(pathname)
+            open(pathname, 'w') do |file|
                 file.puts field.normalize.serialize
                 file.puts
             end
         end
     end
 
-    def problem_file_paths
-        Dir["#{DATA_DIR}/sample-problem-*.txt", "#{DATA_DIR}/problem-*.txt"]
+    def problem_file_pathnames
+        patterns = [
+            "#{DATA_DIR}/sample-problem-*.txt",
+            "#{DATA_DIR}/problem-*.txt",
+        ]
+        Dir[*patterns].map(&Pathname.method(:new))
     end
 
 end

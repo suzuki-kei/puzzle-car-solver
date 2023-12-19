@@ -5,6 +5,10 @@
 test:
 	@ruby -I src/main -I src/test src/test/all.rb
 
+.PHONY: clean
+clean:
+	@rm -rf target
+
 .PHONY: solve
 solve:
 	@ruby -I src/main/ src/main/main.rb solve
