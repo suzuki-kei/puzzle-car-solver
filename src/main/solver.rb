@@ -67,12 +67,14 @@ class Solver
                 puts "[DEBUG] attempts=#{attempts}" if attempts % 1000 == 0
 
                 if can_be_placed?(answer_field, row, column, cell)
-                    answer_field[row][column] = cell
-                    serialized_field = answer_field.serialize
-                    if (solved = cache[serialized_field]).nil?
-                        remaining_cells = cells.take(i) + cells.drop(i + 1)
-                        solved, attempts = traverse(answer_field, remaining_cells, cache, attempts)
-                        cache[serialized_field] = solved
+                    solved, attenmpts = cached(cache, answer_field, row, column, cell) do
+                        answer_field[row][column] = cell
+                        serialized_field = answer_field.serialize
+                        if (solved = cache[serialized_field]).nil?
+                            remaining_cells = cells.take(i) + cells.drop(i + 1)
+                            solved, attempts = traverse(answer_field, remaining_cells, cache, attempts)
+                            cache[serialized_field] = solved
+                        end
                     end
 
                     if solved
@@ -84,6 +86,20 @@ class Solver
             end
 
             [false, attempts]
+        end
+    end
+
+    def cached(cache, answer_field, row, column, cell)
+        answer_field[row][column] = cell
+        cache_key = answer_field.hash
+        answer_field[row][column] = Cell::Empty.new
+
+        if (solved, attempts = cache[cache_key]).nil?
+            yield.tap do |solved|
+                cache[cache_key] = solved
+            end
+        else
+            solved
         end
     end
 

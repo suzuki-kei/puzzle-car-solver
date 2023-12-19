@@ -51,6 +51,10 @@ class Field
         RowAccessor.new(self, row)
     end
 
+    def hash
+        [self.class, @rows].hash
+    end
+
     def size
         [row_size, column_size]
     end

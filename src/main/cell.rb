@@ -78,6 +78,14 @@ module Cell
                 equal_class?(other) && equal_all_fields?(other)
             end
 
+            def hash
+                values = fields.map do |field|
+                    self.instance_variable_get("@#{field}")
+                end
+
+                [self.class, values].hash
+            end
+
             private
 
             def equal_class?(other)
