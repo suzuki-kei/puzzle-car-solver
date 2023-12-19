@@ -24,6 +24,10 @@ class PositionedCell
         @field, @cell, @row, @column = field, cell, row, column
     end
 
+    def position
+        [@row, @column]
+    end
+
     def neighbor(direction)
         case direction
             when :top

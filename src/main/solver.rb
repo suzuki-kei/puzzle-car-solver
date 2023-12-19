@@ -2,139 +2,158 @@ require 'car'
 
 class Solver
 
-    def solve(initial_field)
-        cells = initial_field.cells
-        answer_field = Field.new_empty_field(*initial_field.size)
+    def initialize(initial_field)
+        @initial_field = initial_field
+        @answer_field = Field.new_empty_field(*initial_field.size)
+        @unplaced_cells = initial_field.cells.to_a
+        @cache = {}
+        @attempts = 0
+    end
 
+    def solve
         # 動かせないセルを initial_field と同じ場所に配置する.
-        fixed_cells, cells = cells.partition(&:fixed?)
-        place_fixed_cells(answer_field, fixed_cells)
+        place_fixed_cells
 
         # 一時停止セルを横断歩道の横に配置する.
-        stop_cells, cells = cells.partition(&:stop?)
-        place_stop_cells(answer_field, stop_cells)
+        place_stop_cells
 
         # 残りのセルを総当たりで配置し, 正解を探す.
-        solved, attempts = traverse(answer_field, cells)
-        [(solved ? answer_field : nil), attempts]
-    end
+        [traverse(@unplaced_cells) ? @answer_field : nil, @attempts]
+     end
 
     private
 
-    def solved?(field)
+    def solved?
         begin
-            Car.new(field).run!
+            Car.new(@answer_field).run!
         rescue CarCrushed
             false
         end
     end
 
-    def place_fixed_cells(answer_field, fixed_cells)
-        fixed_cells.each do |cell|
-            answer_field[cell.row][cell.column] = cell
+    def place_fixed_cells
+        @unplaced_cells.reject! do |cell|
+            attempt_to_place_fixed_cell(cell)
         end
     end
 
-    def place_stop_cells(answer_field, stop_cells)
-        stop_cells.each do |stop_cell|
-            place_stop_cell(answer_field, stop_cell)
+    def attempt_to_place_fixed_cell(cell)
+        unless cell.fixed?
+            return false
+        end
+
+        true.tap do
+            @answer_field[cell.row][cell.column] = cell
         end
     end
 
-    def place_stop_cell(answer_field, stop_cell)
-        row, column = find_stop_cell_position(answer_field, stop_cell)
-        answer_field[row][column] = stop_cell
+    def place_stop_cells
+        @unplaced_cells.reject! do |cell|
+            attempt_to_place_stop_cell(cell)
+        end
     end
 
-    def find_stop_cell_position(answer_field, stop_cell)
-        crossing_cell = answer_field.cells.find do |cell|
+    def attempt_to_place_stop_cell(cell)
+        unless cell.stop?
+            return false
+        end
+
+        true.tap do
+            row, column = find_stop_cell_position_to_place(cell)
+            @answer_field[row][column] = cell
+        end
+    end
+
+    def find_stop_cell_position_to_place(stop_cell)
+        crossing_cell = @answer_field.cells.find do |cell|
             cell.crossing? && cell.to == stop_cell.to && cell.neighbor(cell.from).empty?
         end
 
-        empty_cell = crossing_cell.neighbor(crossing_cell.from)
-        [empty_cell.row, empty_cell.column]
+        crossing_cell.neighbor(crossing_cell.from).position
     end
 
-    def traverse(answer_field, cells, cache=Hash.new, attempts=0)
+    def traverse(cells)
         if cells.empty?
-            [solved?(answer_field), attempts]
+            solved?
         else
-            empty_cell = answer_field.cells.select(&:empty?).first
-            row, column = empty_cell.row, empty_cell.column
+            empty_cell = @answer_field.cells.select(&:empty?).first
+            row, column = empty_cell.position
 
             cells.each.with_index do |cell, i|
-                attempts += 1
-                puts "[DEBUG] attempts=#{attempts}" if attempts % 1000 == 0
+                @attempts += 1
+                puts "[DEBUG] attempts=#{@attempts}" if @attempts % 1000 == 0
 
-                if can_be_placed?(answer_field, row, column, cell)
-                    solved, attenmpts = cached(cache, answer_field, row, column, cell) do
-                        answer_field[row][column] = cell
-                        serialized_field = answer_field.serialize
-                        if (solved = cache[serialized_field]).nil?
-                            remaining_cells = cells.take(i) + cells.drop(i + 1)
-                            solved, attempts = traverse(answer_field, remaining_cells, cache, attempts)
-                            cache[serialized_field] = solved
-                        end
-                    end
-
-                    if solved
-                        return [solved, attempts]
+                solved = cached(row, column, cell) do
+                    if can_be_placed?(row, column, cell)
+                        @answer_field[row][column] = cell
+                        traverse(cells.take(i) + cells.drop(i + 1))
                     else
-                        answer_field[row][column] = empty_cell
+                        false
                     end
+                end
+
+                if solved
+                    return true
+                else
+                    @answer_field[row][column] = empty_cell
                 end
             end
 
-            [false, attempts]
+            false
         end
     end
 
-    def cached(cache, answer_field, row, column, cell)
-        answer_field[row][column] = cell
-        cache_key = answer_field.hash
-        answer_field[row][column] = Cell::Empty.new
+    def cached(row, column, cell)
+        @answer_field[row][column] = cell
+        cache_key = @answer_field.hash
+        @answer_field[row][column] = Cell::Empty.new
 
-        if (solved, attempts = cache[cache_key]).nil?
+        if (solved = @cache[cache_key]).nil?
             yield.tap do |solved|
-                cache[cache_key] = solved
+                @cache[cache_key] = solved
             end
         else
             solved
         end
     end
 
-    def can_be_placed?(answer_field, row, column, cell)
-        tunnel_cell_can_be_placed?(answer_field, row, column, cell) ||
-            street_cell_can_be_placed?(answer_field, row, column, cell)
+    def can_be_placed?(row, column, cell)
+        method_names = %i(
+            tunnel_cell_can_be_placed?
+            street_cell_can_be_placed?
+        )
+        method_names.any? do |method_name|
+            send(method_name, row, column, cell)
+        end
     end
 
     # cell が answer_field[row][column] に配置可能な Cell::Tunnel の場合に true.
-    def tunnel_cell_can_be_placed?(answer_field, row, column, cell)
+    def tunnel_cell_can_be_placed?(row, column, cell)
         cell.tunnel? &&
-            !blocked_by_neighbor_cells?(answer_field, row, column, cell) &&
-            !block_neighbor_cells?(answer_field, row, column, cell)
+            !blocked_by_neighbor_cells?(row, column, cell) &&
+            !block_neighbor_cells?(row, column, cell)
     end
 
     # cell が answer_field[row][column] に配置可能な Cell::Street の場合に true.
-    def street_cell_can_be_placed?(answer_field, row, column, cell)
+    def street_cell_can_be_placed?(row, column, cell)
         cell.street? &&
-            !blocked_by_neighbor_cells?(answer_field, row, column, cell) &&
-            !block_neighbor_cells?(answer_field, row, column, cell)
+            !blocked_by_neighbor_cells?(row, column, cell) &&
+            !block_neighbor_cells?(row, column, cell)
     end
 
     # cell への進入方向が隣接セルに塞がれると確定する場合は false を返す.
-    def blocked_by_neighbor_cells?(answer_field, row, column, cell)
+    def blocked_by_neighbor_cells?(row, column, cell)
         cell.directions.any? do |direction|
-            neighbor_cell = answer_field[row][column].neighbor(direction)
+            neighbor_cell = @answer_field[row][column].neighbor(direction)
             reverse_direction = Cell.reverse_direction(direction)
             !neighbor_cell.empty? && !neighbor_cell.directions.include?(reverse_direction)
         end
     end
 
     # 隣接セルの進行方向を塞ぐ場合は false を返す.
-    def block_neighbor_cells?(answer_field, row, column, cell)
+    def block_neighbor_cells?(row, column, cell)
         cell.blocked_directions.any? do |blocked_direction|
-            neighbor_cell = answer_field[row][column].neighbor(blocked_direction)
+            neighbor_cell = @answer_field[row][column].neighbor(blocked_direction)
             reverse_direction = Cell.reverse_direction(blocked_direction)
             neighbor_cell.directions.include?(reverse_direction)
         end
