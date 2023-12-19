@@ -24,7 +24,6 @@ class Application
 
     def solve_problems
         problem_file_paths.each do |file_path|
-next unless file_path == 'data/problem-47.txt'
             puts "==== #{file_path}"
             initial_field = Field.from_file(file_path)
             solved_field, attempts = Solver.new(initial_field).solve
