@@ -1,7 +1,7 @@
 waterway                   street({left,right})         street({top,bottom})  street({top,bottom},{left,right})
-waterway                   street({left,top})           tree                  street({bottom,right})
+waterway                   street({top,left})           tree                  street({right,bottom})
 waterway                   street({top,bottom})         tree                  street({top,bottom})
-street({bottom,right})     street({top,bottom})         street({top,bottom})  street({top,bottom})
+street({right,bottom})     street({top,bottom})         street({top,bottom})  street({top,bottom})
 street({left,bottom})      street({left,right})         tree                  tree
 end({from=top,to=bottom})  start({from=bottom,to=top})  tree                  tree
 

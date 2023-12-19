@@ -1,8 +1,8 @@
-waterway              waterway                           waterway                        end({from=bottom,to=top})       tree                               street({left,top})          tree
+waterway              waterway                           waterway                        end({from=bottom,to=top})       tree                               street({top,left})          tree
 waterway              waterway                           waterway                        crossing({from=bottom,to=top})  tree                               tunnel(1,top)               stop({from=left,to=right})
 waterway              waterway                           waterway                        tunnel(2,bottom)                tree                               tree                        tree
 street({top,right})   street({left,right})               stop({from=bottom,to=top})      street({left,right})            street({left,bottom})              street({left,right})        tunnel(2,right)
-tunnel(3,left)        street({left,bottom})              crossing({from=left,to=right})  street({left,top})              tree                               tree                        tree
+tunnel(3,left)        street({left,bottom})              crossing({from=left,to=right})  street({top,left})              tree                               tree                        tree
 tree                  tree                               tree                            street({top,right})             street({top,bottom},{left,right})  street({right,bottom})      street({left,right})
 street({left,right})  tunnel(3,left)                     street({left,right})            tunnel(1,right)                 crossing({from=right,to=left})     stop({from=bottom,to=top})  stop({from=right,to=left})
 tree                  tree                               tree                            crossing({from=bottom,to=top})  waterway                           waterway                    waterway

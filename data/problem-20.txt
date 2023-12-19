@@ -5,5 +5,5 @@ street({top,right})        street({top,bottom})            stop({from=left,to=ri
 street({top,bottom})       street({top,right})             street({top,bottom})            waterway                    waterway  crossing({from=bottom,to=top})
 street({top,left})         crossing({from=right,to=left})  street({top,left})              street({top,bottom})        waterway  street({top,bottom})
 tree                       tree                            tree                            tunnel(1,right)             waterway  street({left,bottom})
-street({top,bottom})       stop({from=right,to=left})      crossing({from=left,to=right})  street({bottom,right})      waterway  start({from=bottom,to=top})
+street({top,bottom})       stop({from=right,to=left})      crossing({from=left,to=right})  street({right,bottom})      waterway  start({from=bottom,to=top})
 

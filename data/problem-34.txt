@@ -1,6 +1,6 @@
 tree                               tree                         tree                               end({from=bottom,to=top})          tree                    tree
 street({left,bottom})              street({left,bottom})        street({top,bottom},{left,right})  street({top,right})                tree                    tree
-street({right,bottom})             street({left,top})           street({left,right})               street({top,bottom},{left,right})  street({top,bottom})    tree
+street({right,bottom})             street({top,left})           street({left,right})               street({top,bottom},{left,right})  street({top,bottom})    tree
 tree                               tree                         crossing({from=bottom,to=top})     street({left,right})               street({right,bottom})  tree
 street({top,bottom},{left,right})  street({left,bottom})        stop({from=bottom,to=top})         street({top,right})                street({top,left})      tree
 street({left,right})               street({left,right})         street({top,bottom},{left,right})  street({top,bottom})               street({left,bottom})   tree

@@ -1,9 +1,9 @@
-stop({from=left,to=right})         stop({from=bottom,to=top})      tree                  end({from=bottom,to=top})       street({left,bottom})           street({left,top})
+stop({from=left,to=right})         stop({from=bottom,to=top})      tree                  end({from=bottom,to=top})       street({left,bottom})           street({top,left})
 street({top,right})                crossing({from=bottom,to=top})  tree                  stop({from=top,to=bottom})      street({top,bottom})            street({left,bottom})
 crossing({from=top,to=bottom})     street({top,right})             tree                  tree                            street({top,bottom})            tree
 street({top,bottom},{left,right})  street({top,right})             street({top,bottom})  crossing({from=left,to=right})  stop({from=top,to=bottom})      street({top,bottom},{left,right})
 street({left,bottom})              street({right,bottom})          street({top,bottom})  street({top,bottom})            crossing({from=bottom,to=top})  street({right,bottom})
-stop({from=bottom,to=top})         crossing({from=bottom,to=top})  tree                  street({left,right})            stop({from=bottom,to=top})      street({left,top})
-street({top,bottom},{left,right})  street({left,top})              tree                  crossing({from=top,to=bottom})  street({right,bottom})          street({top,bottom},{left,right})
+stop({from=bottom,to=top})         crossing({from=bottom,to=top})  tree                  street({left,right})            stop({from=bottom,to=top})      street({top,left})
+street({top,bottom},{left,right})  street({top,left})              tree                  crossing({from=top,to=bottom})  street({right,bottom})          street({top,bottom},{left,right})
 start({from=bottom,to=top})        street({left,bottom})           street({top,right})   street({left,right})            tree                            tree
 

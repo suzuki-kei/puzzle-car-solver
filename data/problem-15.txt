@@ -1,8 +1,8 @@
 tree                    street({top,bottom})         tree  end({from=bottom,to=top})  tree
-tree                    street({top,right})          tree  street({bottom,right})     street({left,bottom})
+tree                    street({top,right})          tree  street({right,bottom})     street({left,bottom})
 tunnel(1,bottom)        street({top,bottom})         tree  street({top,right})        street({top,bottom})
 tunnel(2,left)          tree                         tree  tunnel(3,left)             tree
-street({bottom,right})  street({top,right})          tree  street({bottom,right})     tunnel(2,left)
-tree                    tunnel(1,top)                tree  street({left,top})         street({top,bottom})
+street({right,bottom})  street({top,right})          tree  street({right,bottom})     tunnel(2,left)
+tree                    tunnel(1,top)                tree  street({top,left})         street({top,bottom})
 tree                    start({from=bottom,to=top})  tree  tunnel(3,left)             tree
 
