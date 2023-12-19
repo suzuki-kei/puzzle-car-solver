@@ -4,6 +4,9 @@ require 'solver'
 
 class Application
 
+    ROOT_DIR = File.absolute_path("#{File.dirname(__FILE__)}/../..")
+    DATA_DIR = File.absolute_path("#{ROOT_DIR}/data")
+
     def run
         subcommand = ARGV.first || 'solve'
 
@@ -43,7 +46,7 @@ class Application
     end
 
     def problem_file_paths
-        Dir['data/sample-problem-*.txt', 'data/problem-*.txt']
+        Dir["#{DATA_DIR}/sample-problem-*.txt", "#{DATA_DIR}/problem-*.txt"]
     end
 
 end
