@@ -2,10 +2,31 @@
 class FieldSerializer
 
     def serialize(field)
-        serialize_rows(field.rows)
+        pretty_format(serialize_rows(field.rows))
     end
 
     private
+
+    def pretty_format(serialized_field, separator='  ')
+        rows = serialized_field.split(/\n/).map do |line|
+            line.split(/ +/)
+        end
+
+        sizes = (0...rows.first.size).map do |column_index|
+            values = rows.map do |row|
+                row[column_index]
+            end
+            values.map(&:size).max
+        end
+
+        rows = rows.map do |values|
+            values = values.zip(sizes).map do |value, size|
+                value.ljust(size)
+            end
+            values.join(separator).strip
+        end
+        rows.join("\n")
+    end
 
     def serialize_rows(rows)
         rows.map(&method(:serialize_row)).join("\n")
