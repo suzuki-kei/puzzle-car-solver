@@ -1,3 +1,4 @@
+require 'exception'
 require 'field'
 require 'solver'
 
@@ -17,10 +18,13 @@ class Application
         end
     rescue Interrupt
         # Ctrl+C で終了した場合はスタックトレースを出さずに終了する.
+    rescue PuzzleCarSolverError => exception
+        $stderr.puts "[ERROR] #{exception.class} - #{exception.message}"
     end
 
     def solve_problems
         problem_file_paths.each do |file_path|
+next unless file_path == 'data/problem-47.txt'
             puts "==== #{file_path}"
             initial_field = Field.from_file(file_path)
             solved_field, attempts = Solver.new(initial_field).solve
